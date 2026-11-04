@@ -67,4 +67,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v1.0.0 glasses-companion-v1.0.0.apk             --title "Glasses Companion v1.0.0 (Signed Release APK)"             --notes "Signed Android Release APK for Glasses Companion."             --clobber
+          gh release create v1.0.0 glasses-companion-v1.0.0.apk             --title "Glasses Companion v1.0.0 (Signed Release APK)"             --notes "Signed Android Release APK for Glasses Companion."             
