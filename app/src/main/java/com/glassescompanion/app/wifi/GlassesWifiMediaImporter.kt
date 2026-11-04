@@ -219,7 +219,7 @@ class GlassesWifiMediaImporter(
             if (ok.isSuccess) done++ else failed += "${item.name}: ${ok.exceptionOrNull()?.message}"
             mutate { it.copy(done = done, failed = failed.toList()) }
         }
-        set {
+        mutate {
             it.copy(
                 phase = WifiPhase.DONE,
                 currentFile = "",

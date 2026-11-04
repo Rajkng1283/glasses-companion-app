@@ -184,7 +184,7 @@ class DialogueTranslationController(
             return true
         }
         val target = TurnController.outputFor(speaker)
-        set {
+        mutate {
             it.copy(
                 phase = TurnPhase.SPEAKING,
                 partial = "",
