@@ -1,0 +1,12 @@
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+*.jks
+*.p12
+*.keystore
+signing/
+node_modules/

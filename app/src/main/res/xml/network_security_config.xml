@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <!-- The glasses' own Wi-Fi access point only serves plain HTTP. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">192.168.169.1</domain>
+        <domain includeSubdomains="false">192.168.49.207</domain>
+    </domain-config>
+</network-security-config>
