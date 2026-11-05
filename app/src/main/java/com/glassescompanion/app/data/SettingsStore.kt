@@ -41,7 +41,16 @@ class SettingsStore(context: Context) {
     val current: AppSettings get() = _state.value
 
     fun update(block: (AppSettings) -> AppSettings) {
-        val next = block(_state.value)
+        val raw = block(_state.value)
+        val next = raw.copy(
+            cloudBaseUrl = raw.cloudBaseUrl.trim(),
+            cloudApiKey = raw.cloudApiKey.trim(),
+            chatModel = raw.chatModel.trim().replace("\n", "").replace("\r", ""),
+            sttModel = raw.sttModel.trim().replace("\n", "").replace("\r", ""),
+            ttsModel = raw.ttsModel.trim().replace("\n", "").replace("\r", ""),
+            ttsVoice = raw.ttsVoice.trim(),
+            signalingUrl = raw.signalingUrl.trim()
+        )
         _state.value = next
         save(next)
     }

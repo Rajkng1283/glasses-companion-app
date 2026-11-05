@@ -63,8 +63,12 @@ class VoiceInput(
 
     /** Transcribes already-captured PCM with whichever engine is available. */
     suspend fun transcribePcm(pcm: ShortArray, lang: Language): String? {
-        if (cloud.ready) return cloud.transcribe(PcmCapture.wav(pcm), lang.code).takeIf { it.isNotBlank() }
-        return recognizer.recognizePcm(pcm, lang.speechTag)
+        val s = settings.current
+        if (s.sttEngine == SttEngine.CLOUD && cloud.ready) {
+            val cloudText = runCatching { cloud.transcribe(PcmCapture.wav(pcm), lang.code) }.getOrNull()
+            if (!cloudText.isNullOrBlank()) return cloudText.trim()
+        }
+        return recognizer.recognizePcm(pcm, lang.speechTag) ?: recognizer.listenOnce(lang.speechTag, {}, {})
     }
 
     private suspend fun listenBleOpus(lang: Language): String? {

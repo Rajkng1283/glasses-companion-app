@@ -51,20 +51,20 @@ jobs:
       - name: Verify APK Signature & Print SHA-256 Hashes
         run: |
           APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
-          cp "$APK_PATH" glasses-companion-v1.0.0.apk
+          cp "$APK_PATH" glasses-companion-v1.0.1.apk
           echo "=== APK SHA-256 ==="
-          sha256sum glasses-companion-v1.0.0.apk
+          sha256sum glasses-companion-v1.0.1.apk
           echo "=== CERTIFICATE SHA-256 ==="
           keytool -list -v -keystore "$RELEASE_KEYSTORE_FILE" -storepass "$RELEASE_KEYSTORE_PASSWORD" -alias "$RELEASE_KEY_ALIAS" | grep -i "SHA256:"
 
       - name: Upload Signed APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: glasses-companion-v1.0.0-apk
-          path: glasses-companion-v1.0.0.apk
+          name: glasses-companion-v1.0.1-apk
+          path: glasses-companion-v1.0.1.apk
 
-      - name: Publish Signed APK to GitHub Releases (v1.0.0)
+      - name: Publish Signed APK to GitHub Releases (v1.0.1)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v1.0.0 glasses-companion-v1.0.0.apk             --title "Glasses Companion v1.0.0 (Signed Release APK)"             --notes "Signed Android Release APK for Glasses Companion."             
+          gh release create v1.0.1 glasses-companion-v1.0.1.apk             --title "Glasses Companion v1.0.1 (Signed Release APK)"             --notes "Signed Android Release APK for Glasses Companion."             

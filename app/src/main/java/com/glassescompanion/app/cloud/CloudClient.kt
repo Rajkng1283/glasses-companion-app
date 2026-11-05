@@ -33,7 +33,7 @@ class CloudClient(private val settings: SettingsStore) {
     private fun base(): String = settings.current.cloudBaseUrl.trim().trimEnd('/')
 
     private fun authed(builder: Request.Builder): Request.Builder =
-        builder.header("Authorization", "Bearer ${settings.current.cloudApiKey.trim()}")
+        builder.header("Authorization", "Bearer ${settings.current.cloudApiKey.trim()}").header("User-Agent", "GlassesCompanion/1.0.1")
 
     private fun require() {
         if (!ready) throw CloudException("Cloud backend not configured (Settings → Cloud AI)")
@@ -66,7 +66,7 @@ class CloudClient(private val settings: SettingsStore) {
 
     private fun completion(messages: JSONArray, temperature: Double): String {
         val body = JSONObject()
-            .put("model", settings.current.chatModel)
+            .put("model", settings.current.chatModel.trim())
             .put("messages", messages)
             .put("temperature", temperature)
         val req = authed(Request.Builder().url("${base()}/chat/completions"))
@@ -83,7 +83,7 @@ class CloudClient(private val settings: SettingsStore) {
     suspend fun transcribe(wav: ByteArray, languageCode: String?): String = withContext(Dispatchers.IO) {
         require()
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
-            .addFormDataPart("model", settings.current.sttModel)
+            .addFormDataPart("model", settings.current.sttModel.trim())
             .addFormDataPart("file", "speech.wav", wav.toRequestBody("audio/wav".toMediaType()))
         if (!languageCode.isNullOrBlank()) builder.addFormDataPart("language", languageCode.substringBefore('-'))
         val req = authed(Request.Builder().url("${base()}/audio/transcriptions")).post(builder.build()).build()
